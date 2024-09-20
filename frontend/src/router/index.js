@@ -1,15 +1,15 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import NavBar from "../views/Navbar.vue";
+import Toolbar from "../views/Toolbar.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "",
-    name: "navbar",
-    component: NavBar,
+    name: "toolbar",
+    component: Toolbar,
     children: [
       {
         path: "/",
