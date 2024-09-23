@@ -3,9 +3,10 @@
     <v-app-bar
       align-center
       color="white"
-      max-height="90px"
+      height="90"
       flat
       app
+      dense
       class="px-16"
     >
       <v-row class="rows px-6">
@@ -20,7 +21,26 @@
         <!-- Right -->
         <v-col class="pa-0 d-flex align-center justify-end">
           <!-- Search bar -->
-          <v-icon class="mr-7">mdi-magnify</v-icon>
+          <v-autocomplete
+            :items="items"
+            placeholder="Search essentials, groceries and more..."
+            class="ma-0"
+            max-width="500"
+            max-height="48"
+            background-color="#F3F9FB"
+            dense
+            flat
+            hide-no-data
+            hide-details
+            solo
+          >
+            <template v-slot:prepend-inner>
+              <v-icon color="#008ECC">mdi-magnify</v-icon>
+            </template>
+            <template v-slot:append-inner>
+              <v-icon color="#008ECC">mdi-microphone</v-icon>
+            </template>
+          </v-autocomplete>
           <v-btn depressed color="white" class="menu-btn">
             <v-icon color="#008ECC">mdi-account-outline</v-icon>
             <p class="ma-0 ml-2">Sign Up/Sign In</p>
@@ -33,7 +53,7 @@
         </v-col>
       </v-row>
     </v-app-bar>
-    <v-divider class="mr-1 ml-1"></v-divider>
+    <v-divider class=""></v-divider>
     <!-- Content -->
     <v-container>
       <router-view />
