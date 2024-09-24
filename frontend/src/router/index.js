@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Toolbar from "../views/Toolbar.vue";
+import RegisterView from "../views/RegisterView.vue";
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ const routes = [
         component: HomeView,
       },
     ],
+  },
+  {
+    path: "/register",
+    name: "user_register",
+    component: RegisterView,
   },
 ];
 
