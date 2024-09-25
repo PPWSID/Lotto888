@@ -24,10 +24,10 @@
           class="d-flex justify-center align-center flex-column mx-2 px-2 mx-sm-8 px-sm-8 mx-md-16 px-md-16"
           elevation="0"
         >
-          <v-card-title class="ma-0 pa-0 align-self-start"
+          <v-card-title class="ma-0 pa-0 align-self-start "
             >Create your account</v-card-title
           >
-          <v-card-text class="ma-0 pa-0 mb-4">It's free and easy</v-card-text>
+          <v-card-text class="ma-0 pa-0 mb-7">It's free and easy</v-card-text>
           <v-form>
             <v-row>
               <!-- username -->
@@ -37,6 +37,7 @@
                   v-model="form.username"
                   label="Enter your name"
                   background-color="#F3F9FB"
+                  dense
                   solo
                   flat
                   required
@@ -49,6 +50,7 @@
                   v-model="form.email"
                   label="Type your e-mail"
                   background-color="#F3F9FB"
+                  dense
                   solo
                   flat
                   required
@@ -57,7 +59,7 @@
               <!-- password -->
               <v-col cols="12" class="py-0">
                 <v-row>
-                  <v-col cols="12" sm="6">
+                  <v-col cols="12" sm="6" class="">
                     <label for="password" class="text-body-2">Password</label>
                     <v-text-field
                       v-model="form.password"
@@ -67,12 +69,13 @@
                       hint="At least 8 characters"
                       background-color="#F3F9FB"
                       @click:append="showPassword = !showPassword"
+                      dense
                       solo
                       flat
                       required
                     ></v-text-field
                   ></v-col>
-                  <v-col cols="12" sm="6">
+                  <v-col cols="12" sm="6" class="">
                     <label for="password" class="text-body-2"
                       >Confirm password</label
                     >
@@ -84,6 +87,7 @@
                       hint="At least 8 characters"
                       background-color="#F3F9FB"
                       @click:append="showPassword = !showPassword"
+                      dense
                       solo
                       flat
                       required
@@ -92,17 +96,24 @@
                 </v-row>
               </v-col>
               <!-- check terms -->
-              <v-co cols="12" class="py-0">
+              <v-co cols="12" class="py-0 d-flex">
                 <v-checkbox
                   v-model="checkbox"
                   :error-messages="checkboxErrors"
-                  label="By creating an account means you agree to the Terms and Conditions, and our Privacy Policy"
-                  class="pa-3 ma-0"
+                  class="px-3 py-0 ma-0"
                   required
                   @change="$v.checkbox.$touch()"
                   @blur="$v.checkbox.$touch()"
-                ></v-checkbox>
+                >
+                  <template v-slot:label>
+                    <p class="pt-3 my-0 text-caption">
+                      By creating an account means you agree to the Terms and
+                      Conditions, and our Privacy Policy
+                    </p>
+                  </template>
+                </v-checkbox>
               </v-co>
+              <!-- submit btn -->
               <v-col cols="12" class="py-0">
                 <v-btn
                   @click="submit"
@@ -117,14 +128,28 @@
                 </v-btn>
               </v-col>
             </v-row>
-            <v-divider class="my-8"></v-divider>
+            <v-row align="center" class="mt-10 mb-2"
+              ><v-divider></v-divider>
+              <p class="text-caption my-0 mx-4 font-weight-light">
+                or do it via other accounts
+              </p>
+              <v-divider></v-divider
+            ></v-row>
             <v-row>
               <v-col class="d-flex justify-center"
-                ><v-icon>mdi-google</v-icon></v-col
+                ><v-btn
+                  fab
+                  elevation="2"
+                  color="white"
+                  max-width="52"
+                  max-height="52"
+                >
+                  <v-icon>mdi-google</v-icon>
+                </v-btn></v-col
               >
             </v-row>
           </v-form>
-          <v-card-text class="ma-0 pa-0 align-self-center"
+          <v-card-text class="ma-0 pa-0 mt-6 mt-sm-10 d-flex justify-center"
             >Aldready have an account? Sign In</v-card-text
           >
         </v-card>
