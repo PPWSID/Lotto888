@@ -21,10 +21,10 @@
       </v-col>
       <v-col cols="12" md="6" class="right-col d-flex justify-center">
         <v-card
-          class="d-flex justify-center align-center flex-column mx-2 px-2 mx-sm-8 px-sm-8 mx-md-16 px-md-16"
+          class="d-flex justify-center align-center flex-column my-auto mx-2 px-2 mx-sm-8 px-sm-8 mx-md-16 px-md-16"
           elevation="0"
         >
-          <v-card-title class="ma-0 pa-0 align-self-start "
+          <v-card-title class="ma-0 pa-0 align-self-start"
             >Create your account</v-card-title
           >
           <v-card-text class="ma-0 pa-0 mb-7">It's free and easy</v-card-text>
@@ -154,6 +154,26 @@
           >
         </v-card>
       </v-col>
+
+      <!-- Scroll button -->
+      <v-btn
+        v-show="showScrollTop && $vuetify.breakpoint.smAndDown"
+        class="scroll-btn scroll-btn-top"
+        icon
+        color="primary"
+        @click="scrollToTop"
+      >
+        <v-icon>mdi-arrow-up</v-icon>
+      </v-btn>
+      <v-btn
+        v-show="showScrollBottom && $vuetify.breakpoint.smAndDown"
+        class="scroll-btn scroll-btn-bottom"
+        icon
+        color="primary"
+        @click="scrollToBottom"
+      >
+        <v-icon>mdi-arrow-down</v-icon>
+      </v-btn>
     </v-row>
   </div>
 </template>
@@ -174,7 +194,38 @@ export default {
       },
       agreeTerm: false,
       showPassword: false,
+      showScrollTop: false,
+      showScrollBottom: true,
     };
+  },
+  methods: {
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+    scrollToBottom() {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    },
+    handleScroll() {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.body.scrollHeight;
+
+      this.showScrollTop =
+        scrollPosition + windowHeight >= documentHeight - 100;
+      this.showScrollBottom = scrollPosition <= 100;
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
 };
 </script>
@@ -193,13 +244,29 @@ export default {
 
 .left-col {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: #008ecc;
   color: white;
 }
 
 .right-col {
   width: 100%;
-  height: 100%;
+  height: 100vh;
+}
+
+.scroll-btn {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: white;
+}
+
+.scroll-btn-top {
+  top: 20px;
+}
+
+.scroll-btn-bottom {
+  bottom: 20px;
 }
 </style>
