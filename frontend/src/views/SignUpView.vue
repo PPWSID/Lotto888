@@ -73,7 +73,7 @@
           </v-row>
         </v-col>
         <!-- check terms -->
-        <v-co cols="12" class="py-0 d-flex">
+        <v-col cols="12" class="py-0 d-flex">
           <v-checkbox
             v-model="checkbox"
             :error-messages="checkboxErrors"
@@ -89,7 +89,7 @@
               </p>
             </template>
           </v-checkbox>
-        </v-co>
+        </v-col>
         <!-- submit btn -->
         <v-col cols="12" class="py-0">
           <v-btn

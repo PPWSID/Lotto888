@@ -7,14 +7,15 @@
       >Welcome Back!</v-card-title
     >
     <v-card-text class="ma-0 pa-0 mb-7">Meet the good luck today</v-card-text>
-    <v-form>
+    <v-form ref="loginForm" v-model="valid">
       <v-row>
         <!-- email -->
         <v-col col="12" class="py-0">
-          <label for="email" class="text-body-2">E-mail</label>
+          <label for="username" class="text-body-2">Username</label>
           <v-text-field
-            v-model="form.email"
-            label="Type your e-mail"
+            v-model="form.username"
+            :rules="usernameRules"
+            label="Type your username"
             background-color="#F3F9FB"
             dense
             solo
@@ -29,6 +30,7 @@
               <label for="password" class="text-body-2">Password</label>
               <v-text-field
                 v-model="form.password"
+                :rules="passwordRules"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 class="mb-1"
@@ -55,7 +57,9 @@
         <!-- submit btn -->
         <v-col cols="12" class="py-0">
           <v-btn
-            @click="submit"
+            @click="submitForm"
+            :loading="loading"
+            :disabled="!valid || loading"
             width="100%"
             max-height="48"
             rounded
@@ -98,33 +102,48 @@
 </template>
   
   <script>
+import axios from "axios";
 export default {
   data() {
     return {
       form: {
         username: "",
         password: "",
-        confirmPassword: "",
-        email: "",
-        tel: "",
-        birth: new Date().toISOString().slice(0, 10),
-        age: 0,
-        sex: "",
       },
-      agreeTerm: false,
       showPassword: false,
+      valid: false,
+      loading: false,
+      usernameRules: [(v) => !!v || "Username is required"],
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) => v.length >= 8 || "Password must be at least 8 characters",
+      ],
     };
+  },
+  methods: {
+    async submitForm() {
+      if (this.$refs.loginForm.validate()) {
+        this.loading = true;
+        try {
+          const response = await axios.post(
+            `${process.env.VUE_APP_DB_PORT}/login`,
+            this.form
+          );
+          console.log(response.data);
+          this.$router.push("/");
+        } catch (error) {
+          this.$toast.error("Login failed. Please try again.");
+          console.log(error);
+        } finally {
+          this.loading = false;
+        }
+      }
+    },
   },
 };
 </script>
   
-  <style scoped>
-.rows {
-  width: 100%;
-  height: 100%;
-  margin: 0 !important;
-}
-
+<style scoped>
 .signup-link {
   text-decoration: none;
   color: #008ecc;
