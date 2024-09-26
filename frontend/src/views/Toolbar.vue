@@ -45,9 +45,13 @@
 
           <v-btn depressed color="white" class="menu-btn d-none d-sm-flex">
             <v-icon color="#008ECC">mdi-account-outline</v-icon>
-            <p class="ma-0 ml-2 d-none d-md-block">Sign Up/Sign In</p>
+            <router-link :to="{ name: 'login_signup' }" class="login-link"
+              ><p class="ma-0 ml-2 d-none d-md-block">
+                Sign Up/Sign In
+              </p></router-link
+            >
           </v-btn>
-          <v-divider vertical class="mr-1 ml-1  d-none d-sm-flex"></v-divider>
+          <v-divider vertical class="mr-1 ml-1 d-none d-sm-flex"></v-divider>
           <v-btn depressed color="white" class="menu-btn d-none d-sm-flex">
             <v-icon color="#008ECC">mdi-cart-outline</v-icon>
             <p class="ma-0 ml-2 d-none d-md-block">Cart</p>
@@ -76,5 +80,9 @@ export default {};
 .menu-btn {
   text-transform: none; /* Prevent uppercase transformation */
   font-weight: inherit; /* Retain the font weight */
+}
+
+.login-link {
+  text-decoration: none;
 }
 </style>

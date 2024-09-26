@@ -6,22 +6,9 @@
     <v-card-title class="ma-0 pa-0 align-self-start"
       >Welcome Back!</v-card-title
     >
-    <v-card-text class="ma-0 pa-0 mb-7">It's free and easy</v-card-text>
+    <v-card-text class="ma-0 pa-0 mb-7">Meet the good luck today</v-card-text>
     <v-form>
       <v-row>
-        <!-- username -->
-        <v-col cols="12" class="py-0">
-          <label for="username" class="text-body-2">Username</label>
-          <v-text-field
-            v-model="form.username"
-            label="Enter your name"
-            background-color="#F3F9FB"
-            dense
-            solo
-            flat
-            required
-          ></v-text-field>
-        </v-col>
         <!-- email -->
         <v-col col="12" class="py-0">
           <label for="email" class="text-body-2">E-mail</label>
@@ -38,58 +25,33 @@
         <!-- password -->
         <v-col cols="12" class="py-0">
           <v-row>
-            <v-col cols="12" sm="6" class="">
+            <v-col cols="12" class="">
               <label for="password" class="text-body-2">Password</label>
               <v-text-field
                 v-model="form.password"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
+                class="mb-1"
                 label="Type your password"
                 hint="At least 8 characters"
                 background-color="#F3F9FB"
                 @click:append="showPassword = !showPassword"
+                hide-details="auto"
                 dense
                 solo
                 flat
                 required
-              ></v-text-field
-            ></v-col>
-            <v-col cols="12" sm="6" class="">
-              <label for="password" class="text-body-2">Confirm password</label>
-              <v-text-field
-                v-model="form.confirmPassword"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showPassword ? 'text' : 'password'"
-                label="Type your password"
-                hint="At least 8 characters"
-                background-color="#F3F9FB"
-                @click:append="showPassword = !showPassword"
-                dense
-                solo
-                flat
-                required
-              ></v-text-field>
+              >
+              </v-text-field>
+              <p
+                class="text-caption text-right font-weight-light pa-0 ma-0 mb-8 margin-bottom-text-field-login"
+              >
+                Forgot password
+              </p>
             </v-col>
           </v-row>
         </v-col>
-        <!-- check terms -->
-        <v-co cols="12" class="py-0 d-flex">
-          <v-checkbox
-            v-model="checkbox"
-            :error-messages="checkboxErrors"
-            class="px-3 py-0 ma-0"
-            required
-            @change="$v.checkbox.$touch()"
-            @blur="$v.checkbox.$touch()"
-          >
-            <template v-slot:label>
-              <p class="pt-3 my-0 text-caption">
-                By creating an account means you agree to the Terms and
-                Conditions, and our Privacy Policy
-              </p>
-            </template>
-          </v-checkbox>
-        </v-co>
+
         <!-- submit btn -->
         <v-col cols="12" class="py-0">
           <v-btn
@@ -101,7 +63,7 @@
             color="#008ecc"
             class="white--text"
           >
-            Sign Up
+            Sign In
           </v-btn>
         </v-col>
       </v-row>
