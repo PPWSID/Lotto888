@@ -154,32 +154,17 @@
           >
         </v-card>
       </v-col>
-
-      <!-- Scroll button -->
-      <v-btn
-        v-show="showScrollTop && $vuetify.breakpoint.smAndDown"
-        class="scroll-btn scroll-btn-top"
-        icon
-        color="primary"
-        @click="scrollToTop"
-      >
-        <v-icon>mdi-arrow-up</v-icon>
-      </v-btn>
-      <v-btn
-        v-show="showScrollBottom && $vuetify.breakpoint.smAndDown"
-        class="scroll-btn scroll-btn-bottom"
-        icon
-        color="primary"
-        @click="scrollToBottom"
-      >
-        <v-icon>mdi-arrow-down</v-icon>
-      </v-btn>
+      <scroll-page-btn />
     </v-row>
   </div>
 </template>
 
 <script>
+import ScrollPageBtn from "../components/ScrollPageBtn.vue";
 export default {
+  components: {
+    ScrollPageBtn,
+  },
   data() {
     return {
       form: {
@@ -194,39 +179,9 @@ export default {
       },
       agreeTerm: false,
       showPassword: false,
-      showScrollTop: false,
-      showScrollBottom: true,
     };
   },
-  methods: {
-    scrollToTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    },
-    scrollToBottom() {
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth",
-      });
-    },
-    handleScroll() {
-      const scrollPosition = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.body.scrollHeight;
-
-      this.showScrollTop =
-        scrollPosition + windowHeight >= documentHeight - 100;
-      this.showScrollBottom = scrollPosition <= 100;
-    },
-  },
-  mounted() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
+  methods: {},
 };
 </script>
 
@@ -252,21 +207,5 @@ export default {
 .right-col {
   width: 100%;
   height: 100vh;
-}
-
-.scroll-btn {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  background-color: white;
-}
-
-.scroll-btn-top {
-  top: 20px;
-}
-
-.scroll-btn-bottom {
-  bottom: 20px;
 }
 </style>
