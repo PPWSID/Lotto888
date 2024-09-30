@@ -7,9 +7,9 @@
       >Welcome Back!</v-card-title
     >
     <v-card-text class="ma-0 pa-0 mb-7">Meet the good luck today</v-card-text>
-    <v-form ref="loginForm" v-model="valid">
+    <v-form ref="loginForm" v-model="valid" @submit.prevent="submitForm">
       <v-row>
-        <!-- email -->
+        <!-- username -->
         <v-col col="12" class="py-0">
           <label for="username" class="text-body-2">Username</label>
           <v-text-field
@@ -60,6 +60,7 @@
             @click="submitForm"
             :loading="loading"
             :disabled="!valid || loading"
+            type="submit"
             width="100%"
             max-height="48"
             rounded
