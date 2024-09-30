@@ -125,15 +125,27 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.loading = true;
         try {
-          const response = await axios.post(
-            `${process.env.VUE_APP_DB_PORT}/login`,
-            this.form
-          );
-          console.log(response.data);
+          await axios.post(`${process.env.VUE_APP_DB_PORT}/login`, this.form);
           this.$router.push("/");
         } catch (error) {
-          this.$toast.error("Login failed. Please try again.");
-          console.log(error);
+          if (!error.response) {
+            // No response from server
+            this.$swal({
+              title: "Connection Error",
+              text: "Cannot connect to the server.",
+              icon: "error",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#3085d6",
+            });
+          } else {
+            this.$swal({
+              title: "Login Failed",
+              text: "Invalid username or password. Please try again.",
+              icon: "error",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#3085d6",
+            });
+          }
         } finally {
           this.loading = false;
         }
