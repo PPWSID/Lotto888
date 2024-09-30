@@ -125,7 +125,12 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.loading = true;
         try {
-          await axios.post(`${process.env.VUE_APP_DB_PORT}/login`, this.form);
+          const response = await axios.post(
+            `${process.env.VUE_APP_DB_PORT}/login`,
+            this.form
+          );
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", this.form.username);
           this.$router.push("/");
         } catch (error) {
           if (!error.response) {
