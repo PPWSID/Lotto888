@@ -7,14 +7,15 @@
       >Create your account</v-card-title
     >
     <v-card-text class="ma-0 pa-0 mb-7">It's free and easy</v-card-text>
-    <v-form>
+    <v-form ref="signupForm" v-model="valid" @submit.prevent="submitForm">
       <v-row>
         <!-- username -->
         <v-col cols="12" class="py-0">
           <label for="username" class="text-body-2">Username</label>
           <v-text-field
             v-model="form.username"
-            label="Enter your name"
+            :rules="usernameRules"
+            label="Enter your username"
             background-color="#F3F9FB"
             dense
             solo
@@ -26,7 +27,8 @@
         <v-col col="12" class="py-0">
           <label for="email" class="text-body-2">E-mail</label>
           <v-text-field
-            v-model="form.email"
+            v-model="form.gmail"
+            :rules="emailRules"
             label="Type your e-mail"
             background-color="#F3F9FB"
             dense
@@ -42,6 +44,7 @@
               <label for="password" class="text-body-2">Password</label>
               <v-text-field
                 v-model="form.password"
+                :rules="passwordRules"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 label="Type your password"
@@ -58,6 +61,7 @@
               <label for="password" class="text-body-2">Confirm password</label>
               <v-text-field
                 v-model="form.confirmPassword"
+                :rules="confirmPasswordRules"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 label="Type your password"
@@ -75,8 +79,8 @@
         <!-- check terms -->
         <v-col cols="12" class="py-0 d-flex">
           <v-checkbox
-            v-model="checkbox"
-            :error-messages="checkboxErrors"
+            v-model="agreeTerm"
+            :rules="agreeTermRules"
             class="px-3 py-0 ma-0"
             required
             @change="$v.checkbox.$touch()"
@@ -93,7 +97,9 @@
         <!-- submit btn -->
         <v-col cols="12" class="py-0">
           <v-btn
-            @click="submit"
+            :loading="loading"
+            :disabled="!valid || !agreeTerm"
+            type="submit"
             width="100%"
             max-height="48"
             rounded
@@ -136,6 +142,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -143,15 +151,68 @@ export default {
         username: "",
         password: "",
         confirmPassword: "",
-        email: "",
-        tel: "",
-        birth: new Date().toISOString().slice(0, 10),
-        age: 0,
-        sex: "",
+        gmail: "",
+        // tel: "",
+        // birth: new Date().toISOString().slice(0, 10),
+        // age: 0,
+        // sex: "",
       },
       agreeTerm: false,
       showPassword: false,
+      usernameRules: [(v) => !!v || "Username is required"],
+      passwordRules: [
+        (v) => !!v || "Password is required",
+        (v) => v.length >= 8 || "Password must be at least 8 characters",
+      ],
+      confirmPasswordRules: [
+        (v) => !!v || "Confirm password is required",
+        (v) => v === this.form.password || "Password does not match",
+      ],
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+      ],
+      agreeTermRules: [(v) => !!v || "You must agree to continue"],
+      valid: false,
+      loading: false,
     };
+  },
+  methods: {
+    async submitForm() {
+      if (this.$refs.signupForm.validate()) {
+        this.loading = true;
+        try {
+          const response = await axios.post(
+            `${process.env.VUE_APP_DB_PORT}/register`,
+            this.form
+          );
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", this.form.username);
+          this.$router.push("/");
+        } catch (error) {
+          if (!error.response) {
+            // No response from server
+            this.$swal({
+              title: "Connection Error",
+              text: "Cannot connect to the server.",
+              icon: "error",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#3085d6",
+            });
+          } else {
+            this.$swal({
+              title: "Sign Up Failed",
+              text: error.response.data.error || "Unknown error.",
+              icon: "error",
+              confirmButtonText: "OK",
+              confirmButtonColor: "#3085d6",
+            });
+          }
+        } finally {
+          this.loading = false;
+        }
+      }
+    },
   },
 };
 </script>
