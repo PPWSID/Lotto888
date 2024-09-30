@@ -1,27 +1,27 @@
 <template>
   <div>
+    <!-- Toolbar -->
     <v-app-bar
-      align-center
-      color="white"
-      height="90"
       flat
       app
-      dense
-      class="px-2 px-sm-16"
+      clipped-left
+      color="white"
+      height="75"
+      class="appbar-top-toolbar"
     >
       <v-row class="rows px-6">
         <!-- Left -->
         <v-col cols="6" class="pa-0 d-flex flex-col justify-start align-center">
-          <v-btn depressed color="white" class="menu-btn">
-            <p class="ma-0 ml-4">Lotto 888</p>
-          </v-btn>
+          <p v-show="mini" class="text-h5 ma-0 ml-8 d-none d-md-block">
+            Dashboard
+          </p>
         </v-col>
 
         <!-- Right -->
         <v-col cols="6" class="pa-0 d-flex align-center justify-end">
           <!-- Search bar -->
           <v-autocomplete
-            :items="items"
+            :items="main_menu"
             placeholder="Search..."
             class="ma-0 d-none d-sm-flex"
             max-width="500"
@@ -60,6 +60,55 @@
       </v-row>
     </v-app-bar>
     <v-divider class=""></v-divider>
+    <!-- Drawer -->
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant.sync="mini"
+      app
+      permanent
+      color="white"
+      width="276"
+      class="navbar-left-drawer"
+    >
+      <!-- Header -->
+      <v-list-item class="px-2">
+        <v-list-item-avatar>
+          <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-title>LOTTO888</v-list-item-title>
+        <v-btn icon @click="mini = !mini">
+          <v-icon>mdi-chevron-left</v-icon></v-btn
+        >
+      </v-list-item>
+
+      <!-- Menu -->
+      <v-list dense>
+        <v-list-item
+          v-for="item in main_menu"
+          :key="item.title"
+          :to="item.link"
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="my-2"></v-divider>
+        <v-list-item v-for="item in sub_menu" :key="item.title" :to="item.link">
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     <!-- Content -->
     <v-container>
       <router-view />
@@ -68,10 +117,33 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: () => ({
+    drawer: true,
+    main_menu: [
+      { title: "Dashboard", icon: "mdi-view-dashboard", link: "/dashboard" },
+      { title: "Chat", icon: "mdi-message", link: "/chat" },
+      { title: "Calendar", icon: "mdi-calendar", link: "/calendar" },
+    ],
+    sub_menu: [
+      { title: "Tasks", icon: "mdi-format-list-bulleted", link: "/tasks" },
+      { title: "Projects", icon: "mdi-archive", link: "/projects" },
+    ],
+    mini: true,
+  }),
+};
 </script>
 
 <style scoped>
+.appbar-top-toolbar {
+  z-index: 6 !important;
+}
+
+.navbar-left-drawer {
+  height: 100vh;
+  border-right: none !important;
+}
+
 .rows {
   width: 100%;
   margin: 0 !important;

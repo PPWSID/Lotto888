@@ -19,6 +19,31 @@ const routes = [
         name: "home",
         component: HomeView,
       },
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: HomeView,
+      },
+      {
+        path: "/chat",
+        name: "chat",
+        component: HomeView,
+      },
+      {
+        path: "/calendar",
+        name: "calendar",
+        component: HomeView,
+      },
+      {
+        path: "/tasks",
+        name: "tasks",
+        component: HomeView,
+      },
+      {
+        path: "/projects",
+        name: "projects",
+        component: HomeView,
+      },
     ],
   },
   {
