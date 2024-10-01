@@ -5,7 +5,7 @@
       flat
       app
       clipped-left
-      color="white"
+      color="surface"
       height="75"
       class="appbar-top-toolbar"
     >
@@ -14,7 +14,7 @@
         <v-col cols="6" class="pa-0 d-flex flex-col justify-start align-center">
           <p
             v-show="mini"
-            class="text-h5 font-weight-medium ma-0 ml-8 d-none d-md-block primary--text"
+            class="text-h5 font-weight-medium ma-0 ml-8 d-none d-md-block"
           >
             {{ currentRouteName }}
           </p>
@@ -29,7 +29,7 @@
             class="ma-0 d-none d-sm-flex"
             max-width="500"
             max-height="48"
-            background-color="#F3F9FB"
+            background-color="surfaceLight"
             dense
             flat
             hide-no-data
@@ -46,14 +46,11 @@
 
           <v-icon color="primary" class="d-sm-none">mdi-menu</v-icon>
 
-          <v-switch
-            v-model="$vuetify.theme.dark"
-            class="ma-0 pa-0 ml-4 d-none d-sm-flex"
-            hide-details
-            color="primary"
-            inset
-            persistent-hint
-          ></v-switch>
+          <v-btn icon @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+            <v-icon color="accent">{{
+              $vuetify.theme.dark ? "mdi-weather-sunny" : "mdi-weather-night"
+            }}</v-icon>
+          </v-btn>
 
           <v-btn depressed icon color="white" class="menu-btn d-none d-sm-flex">
             <v-icon color="primary">mdi-bell-outline</v-icon>
@@ -76,14 +73,16 @@
       :mini-variant.sync="mini"
       app
       permanent
-      color="white"
+      color="surface"
       width="280"
       class="navbar-left-drawer"
     >
       <!-- Header -->
       <v-list-item class="px-2">
         <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+          <v-img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSu9mmXcW7PckG6WTkoanrsoCV6W_dTVAzYcg&s"
+          ></v-img>
         </v-list-item-avatar>
 
         <v-list-item-title>LOTTO888</v-list-item-title>
@@ -100,7 +99,7 @@
           :to="item.link"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon color="primary">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -110,7 +109,7 @@
         <v-divider class="my-2"></v-divider>
         <v-list-item v-for="item in sub_menu" :key="item.title" :to="item.link">
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon color="primary">{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
