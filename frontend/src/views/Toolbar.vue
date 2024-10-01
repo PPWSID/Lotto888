@@ -12,8 +12,11 @@
       <v-row class="rows px-6">
         <!-- Left -->
         <v-col cols="6" class="pa-0 d-flex flex-col justify-start align-center">
-          <p v-show="mini" class="text-h5 ma-0 ml-8 d-none d-md-block">
-            Dashboard
+          <p
+            v-show="mini"
+            class="text-h5 font-weight-medium ma-0 ml-8 d-none d-md-block primary--text"
+          >
+            {{ currentRouteName }}
           </p>
         </v-col>
 
@@ -34,27 +37,34 @@
             solo
           >
             <template v-slot:prepend-inner>
-              <v-icon color="#008ECC">mdi-magnify</v-icon>
+              <v-icon color="primary">mdi-magnify</v-icon>
             </template>
             <template v-slot:append-inner>
-              <v-icon color="#008ECC">mdi-microphone</v-icon>
+              <v-icon color="primary">mdi-microphone</v-icon>
             </template>
           </v-autocomplete>
 
-          <v-icon color="#008ECC" class="d-sm-none">mdi-menu</v-icon>
+          <v-icon color="primary" class="d-sm-none">mdi-menu</v-icon>
 
-          <v-btn depressed color="white" class="menu-btn d-none d-sm-flex">
-            <v-icon color="#008ECC">mdi-account-outline</v-icon>
+          <v-switch
+            v-model="$vuetify.theme.dark"
+            class="ma-0 pa-0 ml-4 d-none d-sm-flex"
+            hide-details
+            color="primary"
+            inset
+            persistent-hint
+          ></v-switch>
+
+          <v-btn depressed icon color="white" class="menu-btn d-none d-sm-flex">
+            <v-icon color="primary">mdi-bell-outline</v-icon>
+          </v-btn>
+          <v-btn depressed text color="white" class="menu-btn d-none d-sm-flex">
+            <v-icon color="primary">mdi-account-outline</v-icon>
             <router-link :to="{ name: 'login_signup' }" class="login-link"
               ><p class="ma-0 ml-2 d-none d-md-block">
                 Sign Up/Sign In
               </p></router-link
             >
-          </v-btn>
-          <v-divider vertical class="mr-1 ml-1 d-none d-sm-flex"></v-divider>
-          <v-btn depressed color="white" class="menu-btn d-none d-sm-flex">
-            <v-icon color="#008ECC">mdi-cart-outline</v-icon>
-            <p class="ma-0 ml-2 d-none d-md-block">Cart</p>
           </v-btn>
         </v-col>
       </v-row>
@@ -67,7 +77,7 @@
       app
       permanent
       color="white"
-      width="276"
+      width="280"
       class="navbar-left-drawer"
     >
       <!-- Header -->
@@ -126,11 +136,16 @@ export default {
       { title: "Calendar", icon: "mdi-calendar", link: "/calendar" },
     ],
     sub_menu: [
-      { title: "Tasks", icon: "mdi-format-list-bulleted", link: "/tasks" },
       { title: "Projects", icon: "mdi-archive", link: "/projects" },
+      { title: "Tasks", icon: "mdi-format-list-bulleted", link: "/tasks" },
     ],
     mini: true,
   }),
+  computed: {
+    currentRouteName() {
+      return this.$route.name.toUpperCase();
+    },
+  },
 };
 </script>
 
