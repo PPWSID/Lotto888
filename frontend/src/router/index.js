@@ -5,6 +5,7 @@ import Toolbar from "../views/Toolbar.vue";
 import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import SignInView from "../views/SignInView.vue";
+import ProjectsView from "../views/ProjectsView.vue";
 
 Vue.use(VueRouter);
 
@@ -42,7 +43,7 @@ const routes = [
       {
         path: "/projects",
         name: "projects",
-        component: HomeView,
+        component: ProjectsView,
       },
     ],
   },
