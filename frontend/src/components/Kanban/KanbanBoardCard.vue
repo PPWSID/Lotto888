@@ -1,7 +1,7 @@
 import draggable from 'vuedraggable';
 <template>
   <div>
-    <v-row>
+    <v-row justify="center">
       <v-col v-for="(project, index) in projectTaskList" :key="index">
         <KanbanColumnCard
           :title="Object.keys(project)[0]"

@@ -5,13 +5,13 @@
       <v-divider></v-divider>
       <v-card-text>
         <draggable v-model="localTaskList" group="task">
-          <v-card
+          <KanbanTaskCard
             v-for="(task, index) in localTaskList"
             :key="index"
+            :task="task"
             class="mb-2"
-          >
-            <v-card-title>{{ task }}</v-card-title>
-          </v-card>
+            color="surface"
+          />
         </draggable>
       </v-card-text>
     </v-card>
@@ -20,9 +20,11 @@
 
 <script>
 import draggable from "vuedraggable";
+import KanbanTaskCard from "./KanbanTaskCard.vue";
 export default {
   components: {
     draggable,
+    KanbanTaskCard,
   },
   props: {
     title: {
