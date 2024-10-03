@@ -1,6 +1,6 @@
 <template>
   <div>
-    <KanbanBoardCard :taskList="getTaskList" :statusList="getTaskStatuses" />
+    <KanbanBoardCard />
   </div>
 </template>
 
@@ -15,14 +15,16 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["fetchTaskList"]),
+    ...mapActions(["fetchProjectList", "updateTaskList"]),
   },
   computed: {
-    ...mapGetters(["getTaskListByStatus", "getTaskStatuses", "getTaskList"]),
+    ...mapGetters(["getProjectList"]),
   },
   mounted() {
-    this.fetchTaskList().then(() => {
-      console.log("Task list fetched");
+    this.fetchProjectList().then(() => {
+      // get project data to task list
+      this.updateTaskList(this.getProjectList);
+      console.log("Project list fetched");
     });
   },
 };

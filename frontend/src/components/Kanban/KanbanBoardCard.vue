@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col v-for="(taskStatus, index) in localStatusList" :key="index">
+      <v-col v-for="(status, index) in getTaskStatuses" :key="index">
         <KanbanColumnCard
-          :title="taskStatus"
-          :taskList="filterTaskByStatus(taskStatus)"
+          :title="status"
+          :taskList="getTaskListByStatus(status)"
         />
       </v-col>
     </v-row>
@@ -13,48 +13,21 @@
 
 <script>
 import KanbanColumnCard from "./KanbanColumnCard.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     KanbanColumnCard,
   },
-  props: {
-    taskList: {
-      type: Array,
-      default: () => [],
-    },
-    statusList: {
-      type: Array,
-      default: () => [],
-    },
-  },
+  props: {},
   data() {
-    return {
-      localTaskList: [...this.taskList],
-      localStatusList: [...this.statusList],
-    };
+    return {};
   },
-  methods: {
-    filterTaskByStatus(status) {
-      return this.localTaskList.filter((task) => task.status === status);
-    },
+  methods: {},
+  computed: {
+    ...mapGetters(["getTaskStatuses", "getTaskListByStatus"]),
   },
-  watch: {
-    taskList: {
-      immediate: true,
-      // set local task by computed prop
-      handler(newTaskList) {
-        this.localTaskList = [...newTaskList];
-      },
-    },
-    statusList: {
-      immediate: true,
-      // set local status by computed prop
-      handler(newStatusList) {
-        this.localStatusList = [...newStatusList];
-      },
-    },
-  },
+  watch: {},
 };
 </script>
 

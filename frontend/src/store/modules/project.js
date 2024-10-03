@@ -5,71 +5,68 @@ const BASE_URL = "https://66eb9e522b6cf2b89c5b1529.mockapi.io";
 
 const projectStore = {
   state: {
-    taskList: [],
-    selectedTask: {},
-    taskStatuses: ["Pending", "Doing", "Done"],
+    projectList: [],
+    selectedProject: {},
+    // maybe not used yet
+    projectStatuses: ["Pending", "Doing", "Done"],
   },
   mutations: {
-    setTaskList(state, taskList) {
-      state.taskList = taskList;
+    setProjectList(state, projectList) {
+      state.projectList = projectList;
     },
-    setSelectedTask(state, selectedTask) {
-      state.selectedTask = selectedTask;
+    setSelectedProject(state, selectedProject) {
+      state.selectedProject = selectedProject;
     },
-    addTask(state, newTask) {
-      state.taskList.push(newTask);
+    addProject(state, newProject) {
+      state.projectList.push(newProject);
     },
   },
   actions: {
-    async fetchTaskList({ commit }) {
+    async fetchProjectList({ commit }) {
       try {
-        const response = await axios.get(`${BASE_URL}/todos`);
-        commit("setTaskList", response.data);
+        const response = await axios.get(`${BASE_URL}/projects`);
+        commit("setProjectList", response.data);
       } catch (error) {
         console.error(error);
       }
     },
-    async fetchSelectedTask({ commit }, taskId) {
+    async fetchSelectedProject({ commit }, id) {
       try {
-        const response = await axios.get(`${BASE_URL}/todos/${taskId}`);
-        commit("setSelectedTask", response.data);
+        const response = await axios.get(`${BASE_URL}/projects/${id}`);
+        commit("setSelectedProject", response.data);
       } catch (error) {
         console.error(error);
       }
     },
-    async addTask({ commit }, newTask) {
+    async addProject({ commit }, newProject) {
       const bodyData = {
-        name: newTask.name,
-        status: newTask.status,
+        name: newProject.name,
+        status: newProject.status,
       };
       try {
-        const response = await axios.post(`${BASE_URL}/todos`, bodyData);
-        commit("addTask", response.data);
+        const response = await axios.post(`${BASE_URL}/projects`, bodyData);
+        commit("addProject", response.data);
       } catch (error) {
         console.error(error);
       }
     },
-    async updateTask(_, { taskData, id }) {
+    async updateProject(_, { projectData, id }) {
       try {
-        await axios.put(`${BASE_URL}/todos/${id}`, taskData);
+        await axios.put(`${BASE_URL}/projects/${id}`, projectData);
       } catch (error) {
         console.error(error);
       }
     },
-    async removeTask(_, id) {
+    async removeProject(_, id) {
       try {
-        await axios.delete(`${BASE_URL}/todos/${id}`);
+        await axios.delete(`${BASE_URL}/projects/${id}`);
       } catch (error) {
         console.log(error);
       }
     },
   },
   getters: {
-    getTaskList: (state) => state.taskList,
-    getTaskListByStatus: (state) => (status) =>
-      state.taskList.filter((task) => task.status === status),
-    getSelectedTask: (state) => state.selectedTask,
-    getTaskStatuses: (state) => state.taskStatuses,
+    getProjectList: (state) => state.projectList,
   },
 };
 
