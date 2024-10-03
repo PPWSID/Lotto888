@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-row justify="center">
-      <v-col v-for="(taskStatus, index) in getTaskStatuses" :key="index">
+      <v-col v-for="(taskStatus, index) in localStatusList" :key="index">
         <KanbanColumnCard
           :title="taskStatus"
-          :taskList="getTaskListByStatus(taskStatus)"
+          :taskList="filterTaskByStatus(taskStatus)"
         />
       </v-col>
     </v-row>
@@ -13,25 +13,47 @@
 
 <script>
 import KanbanColumnCard from "./KanbanColumnCard.vue";
-import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
     KanbanColumnCard,
   },
+  props: {
+    taskList: {
+      type: Array,
+      default: () => [],
+    },
+    statusList: {
+      type: Array,
+      default: () => [],
+    },
+  },
   data() {
-    return {};
+    return {
+      localTaskList: [...this.taskList],
+      localStatusList: [...this.statusList],
+    };
   },
   methods: {
-    ...mapActions(["fetchTaskList"]),
+    filterTaskByStatus(status) {
+      return this.localTaskList.filter((task) => task.status === status);
+    },
   },
-  computed: {
-    ...mapGetters(["getTaskListByStatus", "getTaskStatuses"]),
-  },
-  mounted() {
-    this.fetchTaskList().then(() => {
-      console.log("Task list fetched");
-    });
+  watch: {
+    taskList: {
+      immediate: true,
+      // set local task by computed prop
+      handler(newTaskList) {
+        this.localTaskList = [...newTaskList];
+      },
+    },
+    statusList: {
+      immediate: true,
+      // set local status by computed prop
+      handler(newStatusList) {
+        this.localStatusList = [...newStatusList];
+      },
+    },
   },
 };
 </script>
