@@ -1,11 +1,10 @@
-import draggable from 'vuedraggable';
 <template>
   <div>
     <v-row justify="center">
-      <v-col v-for="(project, index) in projectTaskList" :key="index">
+      <v-col v-for="(taskStatus, index) in getTaskStatuses" :key="index">
         <KanbanColumnCard
-          :title="Object.keys(project)[0]"
-          :taskList="project[Object.keys(project)[0]]"
+          :title="taskStatus"
+          :taskList="getTaskListByStatus(taskStatus)"
         />
       </v-col>
     </v-row>
@@ -14,24 +13,25 @@ import draggable from 'vuedraggable';
 
 <script>
 import KanbanColumnCard from "./KanbanColumnCard.vue";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   components: {
     KanbanColumnCard,
   },
   data() {
-    return {
-      projectTaskList: [
-        { todo: ["task1", "task2", "task3"] },
-        { inProgress: ["task4", "task5", "task6"] },
-        { inReview: [] },
-        { done: ["task7", "task8", "task9"] },
-      ],
-    };
+    return {};
   },
   methods: {
-    onDragEnd(e) {
-      console.log("Drag ended", e);
-    },
+    ...mapActions(["fetchTaskList"]),
+  },
+  computed: {
+    ...mapGetters(["getTaskListByStatus", "getTaskStatuses"]),
+  },
+  mounted() {
+    this.fetchTaskList().then(() => {
+      console.log("Task list fetched");
+    });
   },
 };
 </script>

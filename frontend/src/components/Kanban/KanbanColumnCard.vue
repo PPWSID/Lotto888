@@ -4,11 +4,11 @@
       <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <draggable v-model="localTaskList" group="task">
+        <draggable v-model="localTaskList" group="task" @end="onDragEnd">
           <KanbanTaskCard
             v-for="(task, index) in localTaskList"
             :key="index"
-            :task="task"
+            :task="task.name"
             class="mb-2"
             color="surface"
           />
@@ -38,8 +38,23 @@ export default {
   },
   data() {
     return {
-      localTaskList: this.taskList,
+      // for defend mutating-props
+      localTaskList: [...this.taskList],
     };
+  },
+  methods: {
+    onDragEnd(e) {
+      console.log("Drag ended", e);
+    },
+  },
+  watch: {
+    taskList: {
+      // set local task by computed prop
+      immediate: true,
+      handler(newTaskList) {
+        this.localTaskList = [...newTaskList];
+      },
+    },
   },
 };
 </script>
