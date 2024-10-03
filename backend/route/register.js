@@ -1,14 +1,14 @@
-require('../config/config')
+require("../config/config");
 const userModel = require("../models/userModel");
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const generateUserId = require('../service/generateid')
-const express = require('express'); // ต้อง require express ด้วย
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const generateUserId = require("../service/generateid");
+const express = require("express"); // ต้อง require express ด้วย
 const router = express.Router();
 
-router.post('', async (req, res) => {
+router.post("", async (req, res) => {
   try {
-    console.log('regis');
+    console.log("regis");
     let body = req.body;
     let password = req.body.password;
     let hash_password = await bcrypt.hash(password, 10);
@@ -35,6 +35,11 @@ router.post('', async (req, res) => {
       sex: newUser.sex,
     };
 
+    const checkEmail = await userModel.findOne({ gmail: body.gmail });
+    if (checkEmail) {
+      return res.status(400).send({ error: "Email already exists" });
+    }
+
     let token = jwt.sign(userPayload, process.env.TOKEN, { expiresIn: "10h" });
 
     let data = await newUser.save();
@@ -43,7 +48,6 @@ router.post('', async (req, res) => {
       status: true,
       token: token,
     });
-
   } catch (error) {
     console.error(error);
     return res.status(500).send({ error: "Regis FAIL" });
