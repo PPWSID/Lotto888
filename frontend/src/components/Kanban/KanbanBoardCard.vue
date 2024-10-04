@@ -14,7 +14,7 @@
 
 <script>
 import KanbanColumnCard from "./KanbanColumnCard.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "KanbanBoardCard",
@@ -33,9 +33,14 @@ export default {
     return {};
   },
   methods: {
+    ...mapActions(["updateTask"]),
     handleCardMoved(card) {
       // check if status changed
       if (card.oldStatus !== card.newStatus) {
+        this.updateTask({
+          taskData: { status: card.newStatus },
+          id: card.taskId,
+        });
         this.onCardMoved(card);
       }
     },

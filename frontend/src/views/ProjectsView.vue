@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     ...mapActions(["fetchProjectList", "updateTaskList", "updateProject"]),
-    handleChageTaskStatus(card) {
+    handleChangeTaskStatus(card) {
       this.updateProject({
         projectData: { status: card.newStatus },
         id: card.taskId,
@@ -28,8 +28,9 @@ export default {
     ...mapGetters(["getProjectList"]),
   },
   mounted() {
+    // fetch project data
     this.fetchProjectList().then(() => {
-      // get project data to task list
+      // set project data to task list
       this.updateTaskList(this.getProjectList);
       console.log("Project list fetched");
     });
