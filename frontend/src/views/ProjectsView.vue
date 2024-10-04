@@ -1,6 +1,6 @@
 <template>
   <div>
-    <KanbanBoardCard />
+    <KanbanBoardCard :onCardMoved="handleChangeTaskStatus" />
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import { mapActions, mapGetters } from "vuex";
 import KanbanBoardCard from "../components/Kanban/KanbanBoardCard.vue";
 export default {
+  name: "ProjectsView",
   components: {
     KanbanBoardCard,
   },
@@ -15,7 +16,13 @@ export default {
     return {};
   },
   methods: {
-    ...mapActions(["fetchProjectList", "updateTaskList"]),
+    ...mapActions(["fetchProjectList", "updateTaskList", "updateProject"]),
+    handleChageTaskStatus(card) {
+      this.updateProject({
+        projectData: { status: card.newStatus },
+        id: card.taskId,
+      });
+    },
   },
   computed: {
     ...mapGetters(["getProjectList"]),

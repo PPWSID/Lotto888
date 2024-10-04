@@ -4,10 +4,17 @@
       <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        <draggable v-model="localTaskList" group="task" @end="onDragEnd">
+        <draggable
+          v-model="localTaskList"
+          group="task"
+          @start="handleDragStart"
+          @end="handleDragEnd"
+          :id="title"
+        >
           <KanbanTaskCard
-            v-for="(task, index) in localTaskList"
-            :key="index"
+            v-for="task in localTaskList"
+            :key="task.id"
+            :id="task.id"
             :task="task.name"
             class="mb-2"
             color="surface"
@@ -22,6 +29,7 @@
 import draggable from "vuedraggable";
 import KanbanTaskCard from "./KanbanTaskCard.vue";
 export default {
+  name: "KanbanColumnCard",
   components: {
     draggable,
     KanbanTaskCard,
@@ -43,8 +51,19 @@ export default {
     };
   },
   methods: {
-    onDragEnd(e) {
+    handleDragStart(e) {
+      console.log("Drag stated", e);
+    },
+    handleDragEnd(e) {
       console.log("Drag ended", e);
+      const payload = {
+        taskId: e.item.id,
+        oldStatus: e.from.id,
+        newStatus: e.to.id,
+        oldIndex: e.oldIndex,
+        newIndex: e.newIndex,
+      };
+      this.$emit("cardMoved", payload);
     },
   },
   watch: {
