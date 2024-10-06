@@ -3,12 +3,12 @@
     <KanbanBoardCard :onCardMoved="handleChangeTaskStatus" />
   </div>
 </template>
-
-<script>
+  
+  <script>
 import { mapActions, mapGetters } from "vuex";
 import KanbanBoardCard from "../components/Kanban/KanbanBoardCard.vue";
 export default {
-  name: "ProjectsView",
+  name: "TaskView",
   components: {
     KanbanBoardCard,
   },
@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "fetchProjectList",
+      "fetchTodoList",
       "updateTaskList",
       "updateProject",
       "updateTaskStatuses",
@@ -34,7 +34,7 @@ export default {
   },
   mounted() {
     // fetch project data
-    this.fetchProjectList().then(() => {
+    this.fetchTodoList().then(() => {
       // set project data to task list
       this.updateTaskList(this.getProjectList);
       this.updateTaskStatuses(this.getProjectStatuses);
@@ -43,6 +43,6 @@ export default {
   },
 };
 </script>
-
-<style>
+  
+  <style>
 </style>

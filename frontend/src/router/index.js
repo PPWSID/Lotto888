@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import SignInView from "../views/SignInView.vue";
 import ProjectsView from "../views/ProjectsView.vue";
+import TaskView from "../views/TaskView.vue";
 
 Vue.use(VueRouter);
 
@@ -38,7 +39,7 @@ const routes = [
       {
         path: "/tasks",
         name: "tasks",
-        component: HomeView,
+        component: TaskView,
       },
       {
         path: "/projects",

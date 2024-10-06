@@ -7,8 +7,7 @@ const projectStore = {
   state: {
     projectList: [],
     selectedProject: {},
-    // maybe not used yet
-    projectStatuses: ["Pending", "Doing", "Done"],
+    projectStatuses: [],
   },
   mutations: {
     setProjectList(state, projectList) {
@@ -20,12 +19,23 @@ const projectStore = {
     addProject(state, newProject) {
       state.projectList.push(newProject);
     },
+    SET_PROJECT_STATUSES(state, projectStatuses) {
+      state.projectStatuses = projectStatuses;
+    },
   },
   actions: {
+    /*  Projects */
     async fetchProjectList({ commit }) {
       try {
         const response = await axios.get(`${BASE_URL}/projects`);
         commit("setProjectList", response.data);
+        commit("SET_PROJECT_STATUSES", [
+          "todo",
+          "block",
+          "inProgress",
+          "inReview",
+          "done",
+        ]);
       } catch (error) {
         console.error(error);
       }
@@ -64,9 +74,20 @@ const projectStore = {
         console.log(error);
       }
     },
+    /*  Todos */
+    async fetchTodoList({ commit }) {
+      try {
+        const response = await axios.get(`${BASE_URL}/todos`);
+        commit("setProjectList", response.data);
+        commit("SET_PROJECT_STATUSES", ["Pending", "Doing", "Done"]);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   getters: {
     getProjectList: (state) => state.projectList,
+    getProjectStatuses: (state) => state.projectStatuses,
   },
 };
 

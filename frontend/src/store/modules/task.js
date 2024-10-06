@@ -5,7 +5,7 @@ const taskStore = {
   state: {
     taskList: [],
     selectedTask: {},
-    taskStatuses: ["todo", "block", "inProgress", "inReview", "done"],
+    taskStatuses: [],
   },
   mutations: {
     setTaskList(state, taskList) {
@@ -13,6 +13,9 @@ const taskStore = {
     },
     setSelectedTask(state, selectedTask) {
       state.selectedTask = selectedTask;
+    },
+    setTaskStatuses(state, taskStatuses) {
+      state.taskStatuses = taskStatuses;
     },
     addTask(state, newTask) {
       state.taskList.push(newTask);
@@ -28,12 +31,16 @@ const taskStore = {
   },
   actions: {
     updateTaskList({ commit }, taskList) {
+      commit("setSelectedTask", {});
       commit("setTaskList", taskList);
     },
     updateTask({ commit }, { taskData, id }) {
       const updatedData = { ...this.getters.getTaskById(id), ...taskData };
       commit("modifyTask", updatedData);
       commit("setSelectedTask", this.getters.getTaskById(id));
+    },
+    updateTaskStatuses({ commit }, taskStatuses) {
+      commit("setTaskStatuses", taskStatuses);
     },
   },
   getters: {
