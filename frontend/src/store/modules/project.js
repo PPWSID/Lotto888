@@ -10,13 +10,13 @@ const projectStore = {
     projectStatuses: [],
   },
   mutations: {
-    setProjectList(state, projectList) {
+    SET_PROJECT_LIST(state, projectList) {
       state.projectList = projectList;
     },
-    setSelectedProject(state, selectedProject) {
+    SET_SELECTED_PROJECT(state, selectedProject) {
       state.selectedProject = selectedProject;
     },
-    addProject(state, newProject) {
+    ADD_PROJECT(state, newProject) {
       state.projectList.push(newProject);
     },
     SET_PROJECT_STATUSES(state, projectStatuses) {
@@ -28,7 +28,7 @@ const projectStore = {
     async fetchProjectList({ commit }) {
       try {
         const response = await axios.get(`${BASE_URL}/projects`);
-        commit("setProjectList", response.data);
+        commit("SET_PROJECT_LIST", response.data);
         commit("SET_PROJECT_STATUSES", [
           "todo",
           "block",
@@ -43,7 +43,7 @@ const projectStore = {
     async fetchSelectedProject({ commit }, id) {
       try {
         const response = await axios.get(`${BASE_URL}/projects/${id}`);
-        commit("setSelectedProject", response.data);
+        commit("SET_SELECTED_PROJECT", response.data);
       } catch (error) {
         console.error(error);
       }
@@ -55,7 +55,7 @@ const projectStore = {
       };
       try {
         const response = await axios.post(`${BASE_URL}/projects`, bodyData);
-        commit("addProject", response.data);
+        commit("ADD_PROJECT", response.data);
       } catch (error) {
         console.error(error);
       }
@@ -78,7 +78,7 @@ const projectStore = {
     async fetchTodoList({ commit }) {
       try {
         const response = await axios.get(`${BASE_URL}/todos`);
-        commit("setProjectList", response.data);
+        commit("SET_PROJECT_LIST", response.data);
         commit("SET_PROJECT_STATUSES", ["Pending", "Doing", "Done"]);
       } catch (error) {
         console.error(error);

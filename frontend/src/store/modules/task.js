@@ -8,19 +8,19 @@ const taskStore = {
     taskStatuses: [],
   },
   mutations: {
-    setTaskList(state, taskList) {
+    SET_TASK_LIST(state, taskList) {
       state.taskList = taskList;
     },
-    setSelectedTask(state, selectedTask) {
+    SET_SELECTED_TASK(state, selectedTask) {
       state.selectedTask = selectedTask;
     },
-    setTaskStatuses(state, taskStatuses) {
+    SET_TASK_STATUSES(state, taskStatuses) {
       state.taskStatuses = taskStatuses;
     },
-    addTask(state, newTask) {
+    ADD_TASK(state, newTask) {
       state.taskList.push(newTask);
     },
-    modifyTask(state, updatedTask) {
+    FIX_TASK(state, updatedTask) {
       const index = state.taskList.findIndex(
         (task) => task.id === updatedTask.id
       );
@@ -31,16 +31,16 @@ const taskStore = {
   },
   actions: {
     updateTaskList({ commit }, taskList) {
-      commit("setSelectedTask", {});
-      commit("setTaskList", taskList);
+      commit("SET_SELECTED_TASK", {});
+      commit("SET_TASK_LIST", taskList);
     },
     updateTask({ commit }, { taskData, id }) {
       const updatedData = { ...this.getters.getTaskById(id), ...taskData };
-      commit("modifyTask", updatedData);
-      commit("setSelectedTask", this.getters.getTaskById(id));
+      commit("FIX_TASK", updatedData);
+      commit("SET_SELECTED_TASK", this.getters.getTaskById(id));
     },
     updateTaskStatuses({ commit }, taskStatuses) {
-      commit("setTaskStatuses", taskStatuses);
+      commit("SET_TASK_STATUSES", taskStatuses);
     },
   },
   getters: {
