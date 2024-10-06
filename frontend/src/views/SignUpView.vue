@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="d-flex justify-center align-center flex-column my-auto mx-2 px-2 mx-sm-8 px-sm-8 mx-md-16 px-md-16"
+    class="d-flex justify-center align-center flex-column my-auto py-4 mx-2 px-2 mx-sm-8 px-sm-8 mx-md-16 px-md-16"
     elevation="0"
   >
     <v-card-title class="ma-0 pa-0 align-self-start"
@@ -16,7 +16,7 @@
             v-model="form.username"
             :rules="usernameRules"
             label="Enter your username"
-            background-color="#F3F9FB"
+            background-color="surface"
             dense
             solo
             flat
@@ -30,7 +30,7 @@
             v-model="form.gmail"
             :rules="emailRules"
             label="Type your e-mail"
-            background-color="#F3F9FB"
+            background-color="surface"
             dense
             solo
             flat
@@ -49,7 +49,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 label="Type your password"
                 hint="At least 8 characters"
-                background-color="#F3F9FB"
+                background-color="surface"
                 @click:append="showPassword = !showPassword"
                 dense
                 solo
@@ -66,7 +66,7 @@
                 :type="showPassword ? 'text' : 'password'"
                 label="Type your password"
                 hint="At least 8 characters"
-                background-color="#F3F9FB"
+                background-color="surface"
                 @click:append="showPassword = !showPassword"
                 dense
                 solo
@@ -104,7 +104,7 @@
             max-height="48"
             rounded
             depressed
-            color="#008ecc"
+            color="primary"
             class="white--text"
           >
             Sign Up
@@ -127,7 +127,7 @@
             max-width="52"
             max-height="52"
           >
-            <v-icon>mdi-google</v-icon>
+            <v-icon color="primary">mdi-google</v-icon>
           </v-btn></v-col
         >
       </v-row>
@@ -197,7 +197,7 @@ export default {
               text: "Cannot connect to the server.",
               icon: "error",
               confirmButtonText: "OK",
-              confirmButtonColor: "#3085d6",
+              confirmButtonColor: "primary",
             });
           } else {
             this.$swal({
@@ -205,7 +205,7 @@ export default {
               text: error.response.data.error || "Unknown error.",
               icon: "error",
               confirmButtonText: "OK",
-              confirmButtonColor: "#3085d6",
+              confirmButtonColor: "primary",
             });
           }
         } finally {
@@ -226,6 +226,5 @@ export default {
 
 .signin-link {
   text-decoration: none;
-  color: #008ecc;
 }
 </style>

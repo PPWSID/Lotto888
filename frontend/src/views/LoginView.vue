@@ -20,6 +20,11 @@
         </div>
       </v-col>
       <v-col cols="12" md="6" class="right-col d-flex justify-center">
+        <v-btn icon @click="$vuetify.theme.dark = !$vuetify.theme.dark" class="mode-btn">
+          <v-icon color="primary">{{
+            $vuetify.theme.dark ? "mdi-weather-sunny" : "mdi-weather-night"
+          }}</v-icon>
+        </v-btn>
         <router-view />
       </v-col>
       <scroll-page-btn />
@@ -55,12 +60,19 @@ export default {
 .left-col {
   width: 100%;
   height: 100vh;
-  background-color: #008ecc;
+  background-color: var(--v-primary-base);
   color: white;
 }
 
 .right-col {
   width: 100%;
   height: 100vh;
+}
+
+.mode-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10;
 }
 </style>

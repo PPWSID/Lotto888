@@ -5,6 +5,8 @@ import Toolbar from "../views/Toolbar.vue";
 import LoginView from "../views/LoginView.vue";
 import SignUpView from "../views/SignUpView.vue";
 import SignInView from "../views/SignInView.vue";
+import ProjectsView from "../views/ProjectsView.vue";
+import TaskView from "../views/TaskView.vue";
 
 Vue.use(VueRouter);
 
@@ -18,6 +20,31 @@ const routes = [
         path: "/",
         name: "home",
         component: HomeView,
+      },
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: HomeView,
+      },
+      {
+        path: "/chat",
+        name: "chat",
+        component: HomeView,
+      },
+      {
+        path: "/calendar",
+        name: "calendar",
+        component: HomeView,
+      },
+      {
+        path: "/tasks",
+        name: "tasks",
+        component: TaskView,
+      },
+      {
+        path: "/projects",
+        name: "projects",
+        component: ProjectsView,
       },
     ],
   },
