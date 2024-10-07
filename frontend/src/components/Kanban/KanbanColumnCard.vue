@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card class="kanban-column-card">
       <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
@@ -78,5 +78,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@media screen and (max-width: 767px) {
+  .kanban-column-card {
+    min-width: 200px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .kanban-column-card {
+    min-width: 300px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .kanban-column-card {
+    min-width: 320px;
+  }
+}
 </style>

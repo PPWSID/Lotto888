@@ -1,7 +1,12 @@
 <template>
   <div>
-    <v-row justify="center">
-      <v-col v-for="(status, index) in getTaskStatuses" :key="index">
+    <v-row class="overflow-x-auto flex-md-nowrap">
+      <v-col
+        v-for="(status, index) in getTaskStatuses"
+        :key="index"
+        cols="12"
+        md="auto"
+      >
         <KanbanColumnCard
           :title="status"
           :taskList="getTaskListByStatus(status)"
