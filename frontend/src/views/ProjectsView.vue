@@ -1,6 +1,11 @@
 <template>
   <div>
-    <KanbanBoardCard :onCardMoved="handleChangeTaskStatus" />
+    <KanbanBoardCard
+      :onCardMoved="handleChangeTaskStatus"
+      :onAddCard="handleAddNewTask"
+      :onDeleteCard="handleDeleteTask"
+      :onEditCard="handleEditTask"
+    />
   </div>
 </template>
 
@@ -21,12 +26,29 @@ export default {
       "updateTaskList",
       "updateProject",
       "updateTaskStatuses",
+      "addProject",
+      "removeProject",
     ]),
     handleChangeTaskStatus(card) {
       this.updateProject({
         projectData: { status: card.newStatus },
         id: card.taskId,
       });
+    },
+    handleAddNewTask(status) {
+      this.addProject({
+        name: "testAdd",
+        status: status,
+      });
+    },
+    handleEditTask(id) {
+      this.updateProject({
+        projectData: { name: "testEdit" },
+        id: id,
+      });
+    },
+    handleDeleteTask(id) {
+      this.removeProject(id);
     },
   },
   computed: {

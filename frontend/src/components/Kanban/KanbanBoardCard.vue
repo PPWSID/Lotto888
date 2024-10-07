@@ -11,6 +11,9 @@
           :title="status"
           :taskList="getTaskListByStatus(status)"
           @cardMoved="handleCardMoved"
+          @addCard="handleAddCard"
+          @editCard="handleEditCard"
+          @deleteCard="handleDeleteCard"
         />
       </v-col>
     </v-row>
@@ -33,12 +36,30 @@ export default {
         console.log(card);
       },
     },
+    onAddCard: {
+      type: Function,
+      default: (status) => {
+        console.log(status);
+      },
+    },
+    onEditCard: {
+      type: Function,
+      default: (taskId) => {
+        console.log(taskId);
+      },
+    },
+    onDeleteCard: {
+      type: Function,
+      default: (taskId) => {
+        console.log(taskId);
+      },
+    },
   },
   data() {
     return {};
   },
   methods: {
-    ...mapActions(["updateTask"]),
+    ...mapActions(["updateTask", "addNewTask", "removeTask"]),
     handleCardMoved(card) {
       // check if status changed
       if (card.oldStatus !== card.newStatus) {
@@ -48,6 +69,18 @@ export default {
         });
         this.onCardMoved(card);
       }
+    },
+    handleAddCard(status) {
+      this.addNewTask({ id: Date.now(), name: "testAdd", status: status });
+      this.onAddCard(status);
+    },
+    handleEditCard(taskId) {
+      this.updateTask({ taskData: { name: "testEdit" }, id: taskId });
+      this.onEditCard(taskId);
+    },
+    handleDeleteCard(taskId) {
+      this.removeTask(taskId);
+      this.onDeleteCard(taskId);
     },
   },
   computed: {

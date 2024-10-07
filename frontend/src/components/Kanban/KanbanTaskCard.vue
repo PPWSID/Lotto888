@@ -7,10 +7,16 @@
         >
         <v-col align-self="center" cols="3" class="py-0">
           <div class="d-flex justify-end mr-4">
-            <v-icon color="blue lighten-2" class="mr-2"
-              >mdi-square-edit-outline</v-icon
+            <v-btn icon @click="$emit('editTask')">
+              <v-icon color="blue lighten-2"
+                >mdi-square-edit-outline</v-icon
+              ></v-btn
             >
-            <v-icon color="red lighten-2">mdi-trash-can-outline</v-icon>
+            <v-btn icon @click="$emit('deleteTask')">
+              <v-icon color="red lighten-2"
+                >mdi-trash-can-outline</v-icon
+              ></v-btn
+            >
           </div>
         </v-col>
       </v-row>

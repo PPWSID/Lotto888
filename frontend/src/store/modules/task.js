@@ -20,12 +20,18 @@ const taskStore = {
     ADD_TASK(state, newTask) {
       state.taskList.push(newTask);
     },
-    FIX_TASK(state, updatedTask) {
+    EDIT_TASK(state, updatedTask) {
       const index = state.taskList.findIndex(
         (task) => task.id === updatedTask.id
       );
       if (index !== -1) {
         state.taskList.splice(index, 1, updatedTask);
+      }
+    },
+    DELETE_TASK(state, id) {
+      const index = state.taskList.findIndex((task) => task.id === id);
+      if (index !== -1) {
+        state.taskList.splice(index, 1);
       }
     },
   },
@@ -36,11 +42,19 @@ const taskStore = {
     },
     updateTask({ commit }, { taskData, id }) {
       const updatedData = { ...this.getters.getTaskById(id), ...taskData };
-      commit("FIX_TASK", updatedData);
+      commit("EDIT_TASK", updatedData);
       commit("SET_SELECTED_TASK", this.getters.getTaskById(id));
     },
     updateTaskStatuses({ commit }, taskStatuses) {
       commit("SET_TASK_STATUSES", taskStatuses);
+    },
+    addNewTask({ commit }, newTask) {
+      commit("ADD_TASK", newTask);
+      commit("SET_SELECTED_TASK", newTask);
+    },
+    removeTask({ commit }, id) {
+      commit("DELETE_TASK", id);
+      commit("SET_SELECTED_TASK", {});
     },
   },
   getters: {

@@ -4,6 +4,11 @@
       <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
+        <div class="pt-0 pb-2">
+          <v-btn block @click="$emit('addCard', title)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
         <draggable
           v-model="localTaskList"
           group="task"
@@ -17,6 +22,8 @@
             :key="task.id"
             :id="task.id"
             :task="task.name"
+            @editTask="$emit('editCard', task.id)"
+            @deleteTask="$emit('deleteCard', task.id)"
             color="surface"
             class="py-6"
           />

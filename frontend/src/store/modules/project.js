@@ -48,14 +48,13 @@ const projectStore = {
         console.error(error);
       }
     },
-    async addProject({ commit }, newProject) {
+    async addProject(_, newProject) {
       const bodyData = {
         name: newProject.name,
         status: newProject.status,
       };
       try {
-        const response = await axios.post(`${BASE_URL}/projects`, bodyData);
-        commit("ADD_PROJECT", response.data);
+        await axios.post(`${BASE_URL}/projects`, bodyData);
       } catch (error) {
         console.error(error);
       }
