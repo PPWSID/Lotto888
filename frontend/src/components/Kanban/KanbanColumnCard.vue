@@ -10,14 +10,15 @@
           @start="handleDragStart"
           @end="handleDragEnd"
           :id="title"
+          class="py-0"
         >
           <KanbanTaskCard
             v-for="task in localTaskList"
             :key="task.id"
             :id="task.id"
             :task="task.name"
-            class="mb-2"
             color="surface"
+            class="py-6"
           />
         </draggable>
       </v-card-text>
