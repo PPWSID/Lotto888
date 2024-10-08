@@ -1,4 +1,5 @@
 import axios from "axios";
+import _ from "lodash";
 
 // mock api
 const BASE_URL = "https://66eb9e522b6cf2b89c5b1529.mockapi.io";
@@ -11,7 +12,16 @@ const projectStore = {
   },
   mutations: {
     SET_PROJECT_LIST(state, projectList) {
-      state.projectList = projectList;
+      /**
+       * Note
+       * state.projectList = projectList;
+       * 'this is not good practice because it will mutate the original state'
+       * state.projectList = JSON.parse(JSON.stringify(projectList));
+       * 'this is good practice because it will not mutate the original state'
+       * state.projectList = _.cloneDeep(projectList);
+       * 'lodash is a another way to clone the state'
+       */
+      state.projectList = _.cloneDeep(projectList);
     },
     SET_SELECTED_PROJECT(state, selectedProject) {
       state.selectedProject = selectedProject;
@@ -48,13 +58,14 @@ const projectStore = {
         console.error(error);
       }
     },
-    async addProject(_, newProject) {
+    async addProject({ commit }, newProject) {
       const bodyData = {
         name: newProject.name,
         status: newProject.status,
       };
       try {
-        await axios.post(`${BASE_URL}/projects`, bodyData);
+        const response = await axios.post(`${BASE_URL}/projects`, bodyData);
+        commit("ADD_PROJECT", response.data);
       } catch (error) {
         console.error(error);
       }

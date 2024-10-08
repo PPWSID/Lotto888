@@ -1,6 +1,9 @@
 /**
  * note: อาจได้ใช้นอกเหนือจาก kanbanboard
  */
+
+import _ from "lodash";
+
 const taskStore = {
   state: {
     taskList: [],
@@ -9,7 +12,7 @@ const taskStore = {
   },
   mutations: {
     SET_TASK_LIST(state, taskList) {
-      state.taskList = taskList;
+      state.taskList = _.cloneDeep(taskList);
     },
     SET_SELECTED_TASK(state, selectedTask) {
       state.selectedTask = selectedTask;
