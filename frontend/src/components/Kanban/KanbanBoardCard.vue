@@ -17,6 +17,42 @@
         />
       </v-col>
     </v-row>
+    <v-dialog v-model="addDialog" persistent max-width="600px">
+      <v-card>
+        <v-form ref="taskForm" v-model="valid" @submit.prevent="submitAddCard">
+          <v-card-title><span class="text-h5">Add new task</span></v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-model="taskData.name"
+                    :rules="nameRules"
+                    type="text"
+                    label="Task title"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="blue darken-1"
+              type="reset"
+              text
+              @click="addDialog = false"
+            >
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" type="submit" text :disabled="!valid">
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-form>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -56,7 +92,15 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      addDialog: false,
+      taskData: {
+        name: "",
+        status: "",
+      },
+      valid: false,
+      nameRules: [(v) => !!v || "Name is required"],
+    };
   },
   methods: {
     ...mapActions(["updateTask", "addNewTask", "removeTask"]),
@@ -71,8 +115,16 @@ export default {
       }
     },
     handleAddCard(status) {
-      this.addNewTask({ id: Date.now(), name: "testAdd", status: status });
-      this.onAddCard(status);
+      this.taskData.status = status;
+      this.addDialog = true;
+    },
+    submitAddCard() {
+      this.addDialog = false;
+      if (this.$refs.taskForm.validate()) {
+        this.addNewTask({ ...this.taskData, id: Date.now() });
+        this.onAddCard(this.taskData);
+      }
+      this.$refs.taskForm.reset();
     },
     handleEditCard(taskId) {
       this.updateTask({ taskData: { name: "testEdit" }, id: taskId });
@@ -84,9 +136,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getTaskStatuses", "getTaskListByStatus"]),
+    ...mapGetters(["getTaskStatuses", "getTaskListByStatus", "getProjectList"]),
   },
-  watch: {},
 };
 </script>
 

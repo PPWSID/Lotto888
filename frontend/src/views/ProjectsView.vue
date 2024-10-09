@@ -35,10 +35,9 @@ export default {
         id: card.taskId,
       });
     },
-    handleAddNewTask(status) {
-      this.addProject({
-        name: "testAdd",
-        status: status,
+    handleAddNewTask(taskData) {
+      this.addProject(taskData).then(() => {
+        this.updateTaskList(this.getProjectList);
       });
     },
     handleEditTask(id) {
