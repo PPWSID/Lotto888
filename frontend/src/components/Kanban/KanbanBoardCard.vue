@@ -58,39 +58,14 @@
 
 <script>
 import KanbanColumnCard from "./KanbanColumnCard.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "KanbanBoardCard",
   components: {
     KanbanColumnCard,
   },
-  props: {
-    onCardMoved: {
-      type: Function,
-      default: (card) => {
-        console.log(card);
-      },
-    },
-    onAddCard: {
-      type: Function,
-      default: (status) => {
-        console.log(status);
-      },
-    },
-    onEditCard: {
-      type: Function,
-      default: (taskId) => {
-        console.log(taskId);
-      },
-    },
-    onDeleteCard: {
-      type: Function,
-      default: (taskId) => {
-        console.log(taskId);
-      },
-    },
-  },
+  props: {},
   data() {
     return {
       addDialog: false,
@@ -103,15 +78,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateTask", "addNewTask", "removeTask"]),
     handleCardMoved(card) {
-      // check if status changed
       if (card.oldStatus !== card.newStatus) {
-        this.updateTask({
-          taskData: { status: card.newStatus },
-          id: card.taskId,
-        });
-        this.onCardMoved(card);
+        this.$emit("cardMoved", card);
       }
     },
     handleAddCard(status) {
@@ -121,22 +90,19 @@ export default {
     submitAddCard() {
       this.addDialog = false;
       if (this.$refs.taskForm.validate()) {
-        this.addNewTask({ ...this.taskData, id: Date.now() });
-        this.onAddCard(this.taskData);
+        this.$emit("addCard", this.taskData);
       }
       this.$refs.taskForm.reset();
     },
     handleEditCard(taskId) {
-      this.updateTask({ taskData: { name: "testEdit" }, id: taskId });
-      this.onEditCard(taskId);
+      this.$emit("editCard", taskId);
     },
     handleDeleteCard(taskId) {
-      this.removeTask(taskId);
-      this.onDeleteCard(taskId);
+      this.$emit("deleteCard", taskId);
     },
   },
   computed: {
-    ...mapGetters(["getTaskStatuses", "getTaskListByStatus", "getProjectList"]),
+    ...mapGetters(["getTaskStatuses", "getTaskListByStatus"]),
   },
 };
 </script>

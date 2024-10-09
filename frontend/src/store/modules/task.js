@@ -1,7 +1,3 @@
-/**
- * note: อาจได้ใช้นอกเหนือจาก kanbanboard
- */
-
 import _ from "lodash";
 
 const taskStore = {
@@ -15,13 +11,13 @@ const taskStore = {
       state.taskList = _.cloneDeep(taskList);
     },
     SET_SELECTED_TASK(state, selectedTask) {
-      state.selectedTask = selectedTask;
+      state.selectedTask = _.cloneDeep(selectedTask);
     },
     SET_TASK_STATUSES(state, taskStatuses) {
-      state.taskStatuses = taskStatuses;
+      state.taskStatuses = _.cloneDeep(taskStatuses);
     },
     ADD_TASK(state, newTask) {
-      state.taskList.push(newTask);
+      state.taskList.push(_.cloneDeep(newTask));
     },
     EDIT_TASK(state, updatedTask) {
       const index = state.taskList.findIndex(
@@ -39,16 +35,16 @@ const taskStore = {
     },
   },
   actions: {
-    updateTaskList({ commit }, taskList) {
+    setTaskList({ commit }, taskList) {
       commit("SET_SELECTED_TASK", {});
       commit("SET_TASK_LIST", taskList);
     },
     updateTask({ commit }, { taskData, id }) {
       const updatedData = { ...this.getters.getTaskById(id), ...taskData };
       commit("EDIT_TASK", updatedData);
-      commit("SET_SELECTED_TASK", this.getters.getTaskById(id));
+      commit("SET_SELECTED_TASK", updatedData);
     },
-    updateTaskStatuses({ commit }, taskStatuses) {
+    setTaskStatuses({ commit }, taskStatuses) {
       commit("SET_TASK_STATUSES", taskStatuses);
     },
     addNewTask({ commit }, newTask) {
@@ -72,3 +68,13 @@ const taskStore = {
 };
 
 export default taskStore;
+
+/**
+ * Note
+ * state.projectList = projectList;
+ * 'this is not good practice because it will mutate the original state'
+ * state.projectList = JSON.parse(JSON.stringify(projectList));
+ * 'this is good practice because it will not mutate the original state'
+ * state.projectList = _.cloneDeep(projectList);
+ * 'lodash is a another way to clone the state'
+ */
