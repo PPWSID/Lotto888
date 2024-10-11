@@ -54,10 +54,10 @@ export default {
         console.error(error);
       }
     },
-    async handleEditTask(id) {
+    async handleEditTask(taskData) {
       try {
-        await projectService.putProject(id, { name: "testEdit" });
-        this.updateTask({ taskData: { name: "testEdit" }, id });
+        await projectService.putProject(taskData.id, { name: taskData.name });
+        this.updateTask({ taskData: { name: taskData.name }, id: taskData.id });
       } catch (error) {
         console.error(error);
       }

@@ -17,10 +17,14 @@
         />
       </v-col>
     </v-row>
-    <v-dialog v-model="addDialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
-        <v-form ref="taskForm" v-model="valid" @submit.prevent="submitAddCard">
-          <v-card-title><span class="text-h5">Add new task</span></v-card-title>
+        <v-form ref="taskForm" v-model="valid" @submit.prevent="submitForm">
+          <v-card-title
+            ><span class="text-h5">
+              {{ isEdit ? "Edit Task" : "Add Task" }}
+            </span></v-card-title
+          >
           <v-card-text>
             <v-container>
               <v-row>
@@ -42,7 +46,7 @@
               color="blue darken-1"
               type="reset"
               text
-              @click="addDialog = false"
+              @click="dialog = false"
             >
               Close
             </v-btn>
@@ -68,7 +72,8 @@ export default {
   props: {},
   data() {
     return {
-      addDialog: false,
+      dialog: false,
+      isEdit: false,
       taskData: {
         name: "",
         status: "",
@@ -80,29 +85,36 @@ export default {
   methods: {
     handleCardMoved(card) {
       if (card.oldStatus !== card.newStatus) {
-        this.$emit("cardMoved", card);
+        this.$emit("cardMoved", { ...card });
       }
     },
     handleAddCard(status) {
-      this.taskData.status = status;
-      this.addDialog = true;
+      this.isEdit = false;
+      this.taskData = { name: "", status };
+      this.dialog = true;
     },
-    submitAddCard() {
-      this.addDialog = false;
+    submitForm() {
+      this.dialog = false;
       if (this.$refs.taskForm.validate()) {
-        this.$emit("addCard", this.taskData);
+        if (this.isEdit) {
+          this.$emit("editCard", { ...this.taskData });
+        } else {
+          this.$emit("addCard", { ...this.taskData });
+        }
       }
       this.$refs.taskForm.reset();
     },
     handleEditCard(taskId) {
-      this.$emit("editCard", taskId);
+      this.isEdit = true;
+      this.taskData = { ...this.getTaskById(taskId) };
+      this.dialog = true;
     },
     handleDeleteCard(taskId) {
       this.$emit("deleteCard", taskId);
     },
   },
   computed: {
-    ...mapGetters(["getTaskStatuses", "getTaskListByStatus"]),
+    ...mapGetters(["getTaskStatuses", "getTaskListByStatus", "getTaskById"]),
   },
 };
 </script>

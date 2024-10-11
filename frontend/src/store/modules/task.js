@@ -11,13 +11,13 @@ const taskStore = {
       state.taskList = _.cloneDeep(taskList);
     },
     SET_SELECTED_TASK(state, selectedTask) {
-      state.selectedTask = _.cloneDeep(selectedTask);
+      state.selectedTask = selectedTask;
     },
     SET_TASK_STATUSES(state, taskStatuses) {
-      state.taskStatuses = _.cloneDeep(taskStatuses);
+      state.taskStatuses = taskStatuses;
     },
     ADD_TASK(state, newTask) {
-      state.taskList.push(_.cloneDeep(newTask));
+      state.taskList.push({ ...newTask });
     },
     EDIT_TASK(state, updatedTask) {
       const index = state.taskList.findIndex(
@@ -40,12 +40,18 @@ const taskStore = {
       commit("SET_TASK_LIST", taskList);
     },
     updateTask({ commit }, { taskData, id }) {
-      const updatedData = { ...this.getters.getTaskById(id), ...taskData };
-      commit("EDIT_TASK", updatedData);
-      commit("SET_SELECTED_TASK", updatedData);
+      const existingTask = this.getters.getTaskById(id);
+      if (existingTask) {
+        const updatedData = { ...existingTask, ...taskData };
+        commit("EDIT_TASK", updatedData);
+        commit("SET_SELECTED_TASK", updatedData);
+      }
     },
     setTaskStatuses({ commit }, taskStatuses) {
       commit("SET_TASK_STATUSES", taskStatuses);
+    },
+    selectTask({ commit }, id) {
+      commit("SET_SELECTED_TASK", this.getters.getTaskById(id));
     },
     addNewTask({ commit }, newTask) {
       commit("ADD_TASK", newTask);
