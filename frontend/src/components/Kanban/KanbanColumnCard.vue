@@ -1,23 +1,31 @@
 <template>
   <div>
-    <v-card>
+    <v-card class="kanban-column-card">
       <v-card-title>{{ title }}</v-card-title>
       <v-divider></v-divider>
       <v-card-text>
+        <div class="pt-0 pb-2">
+          <v-btn block @click="$emit('addCard', title)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </div>
         <draggable
           v-model="localTaskList"
           group="task"
           @start="handleDragStart"
           @end="handleDragEnd"
           :id="title"
+          class="py-0"
         >
           <KanbanTaskCard
             v-for="task in localTaskList"
             :key="task.id"
             :id="task.id"
             :task="task.name"
-            class="mb-2"
+            @editTask="$emit('editCard', task.id)"
+            @deleteTask="$emit('deleteCard', task.id)"
             color="surface"
+            class="py-6"
           />
         </draggable>
       </v-card-text>
@@ -78,5 +86,20 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+@media screen and (max-width: 767px) {
+  .kanban-column-card {
+    min-width: 200px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .kanban-column-card {
+    min-width: 300px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .kanban-column-card {
+    min-width: 320px;
+  }
+}
 </style>

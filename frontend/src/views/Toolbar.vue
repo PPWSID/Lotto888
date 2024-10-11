@@ -119,7 +119,7 @@
       </v-list>
     </v-navigation-drawer>
     <!-- Content -->
-    <v-container fluid class="pa-4">
+    <v-container fluid class="pa-8">
       <router-view />
     </v-container>
   </div>

@@ -5,40 +5,45 @@
 </template>
   
   <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 import KanbanBoardCard from "../components/Kanban/KanbanBoardCard.vue";
+import projectService from "../services/projectService";
 export default {
   name: "TaskView",
   components: {
     KanbanBoardCard,
   },
   data() {
-    return {};
+    return {
+      isLoading: false,
+      projectStatuses: ["Pending", "Doing", "Done"],
+    };
   },
   methods: {
-    ...mapActions([
-      "fetchTodoList",
-      "updateTaskList",
-      "updateProject",
-      "updateTaskStatuses",
-    ]),
+    ...mapActions(["setTaskList", "setTaskStatuses", "updateTask"]),
     handleChangeTaskStatus(card) {
-      this.updateProject({
+      this.updateTask({
         projectData: { status: card.newStatus },
         id: card.taskId,
       });
     },
+    async fetchTodos() {
+      try {
+        this.isLoading = true;
+        const response = await projectService.getTodos();
+        return response.data;
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
   },
-  computed: {
-    ...mapGetters(["getProjectList", "getProjectStatuses"]),
-  },
+  computed: {},
   mounted() {
-    // fetch project data
-    this.fetchTodoList().then(() => {
-      // set project data to task list
-      this.updateTaskList(this.getProjectList);
-      this.updateTaskStatuses(this.getProjectStatuses);
-      console.log("Project list fetched");
+    this.fetchTodos().then((response) => {
+      this.setTaskList(response);
+      this.setTaskStatuses(this.projectStatuses);
     });
   },
 };

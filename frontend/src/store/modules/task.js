@@ -1,6 +1,5 @@
-/**
- * note: อาจได้ใช้นอกเหนือจาก kanbanboard
- */
+import _ from "lodash";
+
 const taskStore = {
   state: {
     taskList: [],
@@ -9,7 +8,7 @@ const taskStore = {
   },
   mutations: {
     SET_TASK_LIST(state, taskList) {
-      state.taskList = taskList;
+      state.taskList = _.cloneDeep(taskList);
     },
     SET_SELECTED_TASK(state, selectedTask) {
       state.selectedTask = selectedTask;
@@ -18,9 +17,9 @@ const taskStore = {
       state.taskStatuses = taskStatuses;
     },
     ADD_TASK(state, newTask) {
-      state.taskList.push(newTask);
+      state.taskList.push({ ...newTask });
     },
-    FIX_TASK(state, updatedTask) {
+    EDIT_TASK(state, updatedTask) {
       const index = state.taskList.findIndex(
         (task) => task.id === updatedTask.id
       );
@@ -28,19 +27,39 @@ const taskStore = {
         state.taskList.splice(index, 1, updatedTask);
       }
     },
+    DELETE_TASK(state, id) {
+      const index = state.taskList.findIndex((task) => task.id === id);
+      if (index !== -1) {
+        state.taskList.splice(index, 1);
+      }
+    },
   },
   actions: {
-    updateTaskList({ commit }, taskList) {
+    setTaskList({ commit }, taskList) {
       commit("SET_SELECTED_TASK", {});
       commit("SET_TASK_LIST", taskList);
     },
     updateTask({ commit }, { taskData, id }) {
-      const updatedData = { ...this.getters.getTaskById(id), ...taskData };
-      commit("FIX_TASK", updatedData);
+      const existingTask = this.getters.getTaskById(id);
+      if (existingTask) {
+        const updatedData = { ...existingTask, ...taskData };
+        commit("EDIT_TASK", updatedData);
+        commit("SET_SELECTED_TASK", updatedData);
+      }
+    },
+    setTaskStatuses({ commit }, taskStatuses) {
+      commit("SET_TASK_STATUSES", taskStatuses);
+    },
+    selectTask({ commit }, id) {
       commit("SET_SELECTED_TASK", this.getters.getTaskById(id));
     },
-    updateTaskStatuses({ commit }, taskStatuses) {
-      commit("SET_TASK_STATUSES", taskStatuses);
+    addNewTask({ commit }, newTask) {
+      commit("ADD_TASK", newTask);
+      commit("SET_SELECTED_TASK", newTask);
+    },
+    removeTask({ commit }, id) {
+      commit("DELETE_TASK", id);
+      commit("SET_SELECTED_TASK", {});
     },
   },
   getters: {
@@ -55,3 +74,13 @@ const taskStore = {
 };
 
 export default taskStore;
+
+/**
+ * Note
+ * state.projectList = projectList;
+ * 'this is not good practice because it will mutate the original state'
+ * state.projectList = JSON.parse(JSON.stringify(projectList));
+ * 'this is good practice because it will not mutate the original state'
+ * state.projectList = _.cloneDeep(projectList);
+ * 'lodash is a another way to clone the state'
+ */
