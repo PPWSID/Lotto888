@@ -9,7 +9,32 @@ exports.getAllProjects = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).send({
-      error: "Get all projects error",
+      message: "Get all projects error",
+    });
+  }
+};
+
+exports.getProjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await projectModel
+      .findById(id)
+      .populate("tasks")
+      .populate("sprints")
+      .populate({ path: "members.memberId", select: "name email" });
+
+    if (!project) {
+      return res.status(404).send({
+        message: "Project not found",
+      });
+    }
+    
+    return res.status(200).json(project);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      message: "Get project by id error",
     });
   }
 };
@@ -22,7 +47,7 @@ exports.createProject = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).send({
-      error: "Create new project error",
+      message: "Create new project error",
     });
   }
 };
