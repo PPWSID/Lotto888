@@ -55,14 +55,33 @@
           <v-btn depressed icon color="white" class="menu-btn d-none d-sm-flex">
             <v-icon color="primary">mdi-bell-outline</v-icon>
           </v-btn>
-          <v-btn depressed text color="white" class="menu-btn d-none d-sm-flex">
-            <v-icon color="primary">mdi-account-outline</v-icon>
-            <router-link :to="{ name: 'login_signup' }" class="login-link"
-              ><p class="ma-0 ml-2 d-none d-md-block">
-                Sign Up/Sign In
-              </p></router-link
+          <div v-if="isLoggedIn" class="d-flex align-center">
+            <p class="ma-0">welcome, {{ username }}</p>
+            <v-btn
+              depressed
+              text
+              color="white"
+              class="menu-btn d-none d-sm-flex"
+              @click="logout"
             >
-          </v-btn>
+              <v-icon color="primary">mdi-logout</v-icon>
+            </v-btn>
+          </div>
+          <div v-else>
+            <v-btn
+              depressed
+              text
+              color="white"
+              class="menu-btn d-none d-sm-flex"
+            >
+              <v-icon color="primary">mdi-account-outline</v-icon>
+              <router-link :to="{ name: 'login_signin' }" class="login-link"
+                ><p class="ma-0 ml-2 d-none d-md-block">
+                  Sign Up/Sign In
+                </p></router-link
+              >
+            </v-btn>
+          </div>
         </v-col>
       </v-row>
     </v-app-bar>
@@ -143,6 +162,19 @@ export default {
   computed: {
     currentRouteName() {
       return this.$route.name.toUpperCase();
+    },
+    isLoggedIn() {
+      return localStorage.getItem("token") !== null;
+    },
+    username() {
+      return localStorage.getItem("username");
+    },
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      window.location.reload();
     },
   },
 };

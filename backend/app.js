@@ -6,6 +6,9 @@ const Login = require("./route/login");
 const Register = require("./route/register");
 const Project = require("./route/projects");
 
+//----------- Require Middleware -----------//
+const verifyToken = require("./middleware/verifyToken");
+
 //---- Config -----//
 const app = express();
 app.use(bodyParser.json({ limit: "512mb" }));
@@ -21,7 +24,7 @@ app.get("/", (req, res) => {
 //------------- Route -------------//
 app.use("/login", Login);
 app.use("/register", Register);
-app.use("/projects", Project);
+app.use("/projects", verifyToken, Project);
 
 //------- PORT ------//
 

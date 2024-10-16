@@ -4,13 +4,13 @@
     elevation="0"
   >
     <v-card-title class="ma-0 pa-0 align-self-start"
-      >Create your account</v-card-title
+      >Welcome Back!</v-card-title
     >
-    <v-card-text class="ma-0 pa-0 mb-7">It's free and easy</v-card-text>
-    <v-form ref="signupForm" v-model="valid" @submit.prevent="submitForm">
+    <v-card-text class="ma-0 pa-0 mb-7">Meet the good luck today</v-card-text>
+    <v-form ref="loginForm" v-model="valid" @submit.prevent="submitForm">
       <v-row>
         <!-- username -->
-        <v-col cols="12" class="py-0">
+        <v-col col="12" class="py-0">
           <label for="username" class="text-body-2">Username</label>
           <v-text-field
             v-model="form.username"
@@ -23,82 +23,43 @@
             required
           ></v-text-field>
         </v-col>
-        <!-- email -->
-        <v-col col="12" class="py-0">
-          <label for="email" class="text-body-2">E-mail</label>
-          <v-text-field
-            v-model="form.gmail"
-            :rules="emailRules"
-            label="Type your e-mail"
-            background-color="surface"
-            dense
-            solo
-            flat
-            required
-          ></v-text-field>
-        </v-col>
         <!-- password -->
         <v-col cols="12" class="py-0">
           <v-row>
-            <v-col cols="12" sm="6" class="">
+            <v-col cols="12" class="">
               <label for="password" class="text-body-2">Password</label>
               <v-text-field
                 v-model="form.password"
                 :rules="passwordRules"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
-                label="Type your password"
+                class="mb-1"
+                label="Enter your password"
                 hint="At least 8 characters"
                 background-color="surface"
                 @click:append="showPassword = !showPassword"
+                hide-details="auto"
                 dense
                 solo
                 flat
                 required
-              ></v-text-field
-            ></v-col>
-            <v-col cols="12" sm="6" class="">
-              <label for="password" class="text-body-2">Confirm password</label>
-              <v-text-field
-                v-model="form.confirmPassword"
-                :rules="confirmPasswordRules"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="showPassword ? 'text' : 'password'"
-                label="Type your password"
-                hint="At least 8 characters"
-                background-color="surface"
-                @click:append="showPassword = !showPassword"
-                dense
-                solo
-                flat
-                required
-              ></v-text-field>
+              >
+              </v-text-field>
+              <p
+                class="text-caption text-right font-weight-light pa-0 ma-0 mb-8 margin-bottom-text-field-login"
+              >
+                Forgot password
+              </p>
             </v-col>
           </v-row>
         </v-col>
-        <!-- check terms -->
-        <v-col cols="12" class="py-0 d-flex">
-          <v-checkbox
-            v-model="agreeTerm"
-            :rules="agreeTermRules"
-            class="px-3 py-0 ma-0"
-            required
-            @change="$v.checkbox.$touch()"
-            @blur="$v.checkbox.$touch()"
-          >
-            <template v-slot:label>
-              <p class="pt-3 my-0 text-caption">
-                By creating an account means you agree to the Terms and
-                Conditions, and our Privacy Policy
-              </p>
-            </template>
-          </v-checkbox>
-        </v-col>
+
         <!-- submit btn -->
         <v-col cols="12" class="py-0">
           <v-btn
+            @click="submitForm"
             :loading="loading"
-            :disabled="!valid || !agreeTerm"
+            :disabled="!valid || loading"
             type="submit"
             width="100%"
             max-height="48"
@@ -107,7 +68,7 @@
             color="primary"
             class="white--text"
           >
-            Sign Up
+            Sign In
           </v-btn>
         </v-col>
       </v-row>
@@ -133,57 +94,40 @@
       </v-row>
     </v-form>
     <v-card-text class="ma-0 pa-0 mt-6 mt-sm-10 d-flex justify-center"
-      >Already have an account?
-      <router-link :to="{ name: 'login_signin' }" class="signin-link ml-1"
-        ><p class="font-weight-bold">Sign In</p></router-link
+      >Don't have an account?
+      <router-link :to="{ name: 'login_signup' }" class="signup-link ml-1"
+        ><p class="font-weight-bold">Sign Up</p></router-link
       ></v-card-text
     >
   </v-card>
 </template>
-
-<script>
+  
+  <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
       form: {
         username: "",
         password: "",
-        confirmPassword: "",
-        gmail: "",
-        // tel: "",
-        // birth: new Date().toISOString().slice(0, 10),
-        // age: 0,
-        // sex: "",
       },
-      agreeTerm: false,
       showPassword: false,
+      valid: false,
+      loading: false,
       usernameRules: [(v) => !!v || "Username is required"],
       passwordRules: [
         (v) => !!v || "Password is required",
         (v) => v.length >= 8 || "Password must be at least 8 characters",
       ],
-      confirmPasswordRules: [
-        (v) => !!v || "Confirm password is required",
-        (v) => v === this.form.password || "Password does not match",
-      ],
-      emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
-      agreeTermRules: [(v) => !!v || "You must agree to continue"],
-      valid: false,
-      loading: false,
     };
   },
   methods: {
     async submitForm() {
-      if (this.$refs.signupForm.validate()) {
+      if (this.$refs.loginForm.validate()) {
         this.loading = true;
         try {
           const response = await axios.post(
-            `${process.env.VUE_APP_DB_PORT}/register`,
+            `${process.env.VUE_APP_DB_PORT}/login`,
             this.form
           );
           localStorage.setItem("token", response.data.token);
@@ -201,8 +145,8 @@ export default {
             });
           } else {
             this.$swal({
-              title: "Sign Up Failed",
-              text: error.response.data.error || "Unknown error.",
+              title: "Login Failed",
+              text: "Invalid username or password. Please try again.",
               icon: "error",
               confirmButtonText: "OK",
               confirmButtonColor: "primary",
@@ -216,15 +160,9 @@ export default {
   },
 };
 </script>
-
+  
 <style scoped>
-.rows {
-  width: 100%;
-  height: 100%;
-  margin: 0 !important;
-}
-
-.signin-link {
+.signup-link {
   text-decoration: none;
 }
 </style>
